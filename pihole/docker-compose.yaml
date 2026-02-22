@@ -1,1 +1,112 @@
-TEST
+services:
+  traefik:
+    image: traefik:v3.6.2
+    deploy:
+      resources:
+          limits:
+            cpus: 1
+            memory: 1gb
+          reservations:
+            cpus: 1
+            memory: 500m
+
+    container_name: traefik
+    restart: unless-stopped
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--api.dashboard=true"
+      - "--entrypoints.periphery.address=:8120"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.cloudflare.acme.email=${CLOUDFLARE_EMAIL}"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.delaybeforecheck=0"
+    labels:
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.enable=true"
+        # env_file: ".env"
+    ports:
+      - 80:80
+      - 8080:8080
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /opt/docker/traefik/.letsencrypt:/letsencrypt
+    networks:
+      - traefik_proxy
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:2025.11.1
+    ports:
+      # DNS Ports
+      - "53:53/tcp"
+      - "53:53/udp"
+      # Default HTTP Port
+      - "8081:80/tcp"
+      # Default HTTPs Port. FTL will generate a self-signed certificate
+      # - "443:443/tcp"
+    environment:
+      # Set the appropriate timezone for your location from
+      # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones, e.g:
+      TZ: 'America/New_York'
+      # Set a password to access the web interface. Not setting one will result in a random password being assigned
+      FTLCONF_webserver_api_password: ${FTLCONF_WEBSERVER_API_PASSWORD}
+      # If using Docker's default `bridge` network setting the dns listening mode should be set to 'all'
+      FTLCONF_dns_listeningMode: 'all'
+    # Volumes store your data between container upgrades
+    volumes:
+      # For persisting Pi-hole's databases and common configuration file
+      - '/opt/docker/pihole/etc:/etc/pihole'
+
+    cap_add:
+      # See https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+      # Required if you are using Pi-hole as your DHCP server, else not needed
+      - NET_ADMIN
+      # Required if you are using Pi-hole as your NTP client to be able to set the host's system time
+      - SYS_TIME
+      # Optional, if Pi-hole should get some more processing time
+      - SYS_NICE
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pihole.rule=Host(`pihole.xalab.io`)"
+      - "traefik.http.routers.pihole.entrypoints=websecure"
+      - "traefik.http.routers.pihole.tls.certresolver=cloudflare"
+      - "traefik.http.services.pihole.loadbalancer.server.port=80"
+    networks:
+      - traefik_proxy
+  komodo-periphery:
+    container_name: komodo-periphery
+    image: ghcr.io/moghtech/komodo-periphery:1.19.5
+      #env_file: ".env"
+      # labels:
+      #- "komodo.skip"
+      #- "traefik.enable=true"
+      #- "traefik.http.routers.periphery.rule=Host(`pihole`)"
+      #- "traefik.http.routers.periphery.entrypoints=periphery"
+        #- "traefik.http.routers.periphery.tls.certresolver=cloudflare"
+        #- "traefik.http.routers.periphery.service=periphery"
+        #- "traefik.http.services.periphery.loadbalancer.server.port=8120"
+    restart: unless-stopped
+    ports:
+      - 8120:8120
+    environment:
+      PERIPHERY_ROOT_DIRECTORY: ${PERIPHERY_ROOT_DIRECTORY:-/etc/komodo}
+      PERIPHERY_SSL_ENABLED: false
+      PERIPHERY_DISABLE_TERMINALS: false
+      PERIPHERY_PASSKEYS: ${PERIPHERY_PASSKEYS}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc:/proc
+      - ${PERIPHERY_ROOT_DIRECTORY:-/etc/komodo}:${PERIPHERY_ROOT_DIRECTORY:-/etc/komodo}
+    networks:
+      - traefik_proxy
+
+
+networks:
+  traefik_proxy:
+    name: traefik_proxy
+    external: true
