@@ -1,0 +1,21 @@
+services:
+  dummy:
+    image: alpine:latest
+    container_name: dummy-secret-test
+    restart: unless-stopped
+
+    command:
+      - sh
+      - -c
+      - |
+        echo "Container started"
+        echo "Secret contents:"
+        cat /run/secrets/test_secret
+        sleep infinity
+
+    secrets:
+      - test_secret
+
+secrets:
+  test_secret:
+    external: true
