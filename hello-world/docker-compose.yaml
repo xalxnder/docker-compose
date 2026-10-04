@@ -5,7 +5,7 @@ services:
     container_name: dummy-secret-test
     restart: unless-stopped
     environment:
-      - password={password}
+      password: ${password}
 
     command:
       - sh
