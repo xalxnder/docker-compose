@@ -4,6 +4,8 @@ services:
     image: alpine:latest
     container_name: dummy-secret-test
     restart: unless-stopped
+    environment:
+      - password={password}
 
     command:
       - sh
@@ -14,9 +16,3 @@ services:
         cat /run/secrets/test_secret
         sleep infinity
 
-    secrets:
-      - test_secret
-
-secrets:
-  test_secret:
-    external: true
