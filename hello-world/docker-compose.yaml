@@ -1,3 +1,4 @@
+name: dummy-stack
 services:
   dummy:
     image: alpine:latest
