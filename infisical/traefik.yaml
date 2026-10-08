@@ -29,7 +29,6 @@ services:
       - --certificatesresolvers.cloudflare.acme.dnsChallenge.resolvers=8.8.8.8:53,1.1.1.1:53
       - --certificatesresolvers.cloudflare.acme.caServer=https://acme-v02.api.letsencrypt.org/directory
         #- --certificatesresolvers.cloudflare.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
-    env_file: .infisical-env
     ports:
       - 80:80
       - 8080:8080
