@@ -6,7 +6,8 @@ services:
     restart: unless-stopped
     environment:
       password: ${password}
-
+    volumes:
+      - ./dummy-dir:/opt/dummy
     command:
       - sh
       - -c
@@ -15,4 +16,5 @@ services:
         echo "Secret contents:"
         cat /run/secrets/test_secret
         sleep infinity
+    
 
