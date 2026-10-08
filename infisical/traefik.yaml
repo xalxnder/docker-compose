@@ -1,0 +1,45 @@
+services:
+  traefik:
+    image: traefik:v3.7.4
+    dns:
+      - 192.168.1.165
+    deploy:
+      resources:
+          limits:
+            cpus: 1
+            memory: 1gb
+          reservations:
+            cpus: 1
+            memory: 500m
+
+    container_name: traefik
+    restart: unless-stopped
+    command:
+      - --log.level=DEBUG
+      - --api.insecure=true
+      - --providers.docker=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.periphery.address=:8120
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.cloudflare.acme.email=xalexander51@gmail.com
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.propagation.delayBeforeChecks=30
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.propagation.disableChecks=true
+      - --certificatesresolvers.cloudflare.acme.dnsChallenge.resolvers=8.8.8.8:53,1.1.1.1:53
+      - --certificatesresolvers.cloudflare.acme.caServer=https://acme-v02.api.letsencrypt.org/directory
+        #- --certificatesresolvers.cloudflare.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
+    env_file: .infisical-env
+    ports:
+      - 80:80
+      - 8080:8080
+      - 443:443
+      - 8120:8120
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
+    environment:
+      CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN}
+      CF_API_EMAIL: ${CF_API_EMAIL}
+      CLOUDFLARE_API_KEY: ${CLOUDFLARE_API_KEY}
+
