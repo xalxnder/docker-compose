@@ -1,6 +1,6 @@
 name: pihole-stack
 include:
-  # - path: pihole.yaml
+  - path: pihole.yaml
   - path: traefik.yaml
 networks:
   traefik_proxy:
