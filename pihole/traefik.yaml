@@ -41,7 +41,7 @@ services:
       - ./letsencrypt:/letsencrypt
     networks:
       - traefik_proxy
-  networks:
-    traefik_proxy:
-      name: traefik_proxy
-      external: true
+networks:
+  traefik_proxy:
+    name: traefik_proxy
+    external: true
