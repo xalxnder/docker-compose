@@ -3,5 +3,6 @@ include:
   # - path: pihole.yaml
   - path: traefik.yaml
 networks:
-  traefik-proxy:
-    external: false
+  traefik_proxy:
+    name: traefik_proxy
+    external: true
