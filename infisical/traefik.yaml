@@ -11,6 +11,8 @@ services:
           reservations:
             cpus: 1
             memory: 500m
+    networks:
+      - traefik_proxy
 
     container_name: traefik
     restart: unless-stopped
