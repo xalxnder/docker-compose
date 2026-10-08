@@ -27,8 +27,8 @@ services:
       - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
       - "--certificatesresolvers.cloudflare.acme.dnschallenge.delaybeforecheck=0"
     environment:
-      CLOUDFLARE_EMAIL: ${cloudflare_email}
-      CLOUDFLARE_DNS_API_TOKEN: ${cloudflare_dns_token}
+      CLOUDFLARE_EMAIL: ${CLOUDFLARE_EMAIL}
+      CLOUDFLARE_DNS_API_TOKEN: ${CLOUDFLARE_DNS_TOKEN}
     labels:
       - "traefik.http.routers.dashboard.service=api@internal"
       - "traefik.enable=true"
