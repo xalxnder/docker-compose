@@ -5,11 +5,8 @@ services:
     deploy:
       resources:
           limits:
-            cpus: 1
-            memory: 1gb
-          reservations:
-            cpus: 1
-            memory: 500m
+            cpus: "0.50"
+            memory: 256M
 
     container_name: traefik
     restart: unless-stopped
