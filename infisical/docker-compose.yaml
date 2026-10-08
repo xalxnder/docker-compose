@@ -1,0 +1,16 @@
+name: infisical-stack
+include:
+  # - path: infisical.yaml
+  - path: traefik.yaml
+  # - path: redis.yaml.yaml
+  # - path: postgres.yaml.yaml
+
+
+volumes:
+  redis_data:
+    driver: local
+  database_data:
+networks:
+  traefik_proxy:
+    name: traefik_proxy
+    external: true
