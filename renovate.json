@@ -1,9 +1,22 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
-    "schedule:daily"
+    "config:recommended"
   ],
-  "prBodyTemplate": "{{{table}}}{{{changelogs}}}",
-  "timezone": "America/New_York"
+  "timezone": "America/New_York",
+  "registryAliases": {
+    "nexus.xalab.io": "registry-1.docker.io"
+  },
+  "docker-compose": {
+    "managerFilePatterns": [
+      "/(^|/)[^/]+/[^/]+\\.ya?ml$/"
+    ]
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["docker-compose"],
+      "groupName": "Docker Compose minor and patch updates",
+      "matchUpdateTypes": ["minor", "patch"]
+    }
+  ]
 }
