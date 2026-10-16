@@ -1,0 +1,21 @@
+services:
+  infisical-redis:
+    image: redis:8.6.4
+    deploy:
+      resources:
+        limits:
+          cpus: 3
+          memory: 6gb
+        reservations:
+          cpus: 2
+          memory: 4gb
+    container_name: infisical-redis
+    networks:
+      - traefik_proxy
+    restart: always
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
