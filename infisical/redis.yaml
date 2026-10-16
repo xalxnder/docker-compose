@@ -4,11 +4,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: 3
-          memory: 6gb
+          cpus: "1.0"
+          memory: 1gb
         reservations:
-          cpus: 2
-          memory: 4gb
+           cpus: "0.25"
+           memory: 256mb
     container_name: infisical-redis
     networks:
       - traefik_proxy
