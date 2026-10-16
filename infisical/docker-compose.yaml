@@ -2,7 +2,7 @@ name: infisical-stack
 include:
   # - path: infisical.yaml
   - path: traefik.yaml
-  # - path: redis.yaml.yaml
+  - path: redis.yaml.yaml
   # - path: postgres.yaml.yaml
 
 
