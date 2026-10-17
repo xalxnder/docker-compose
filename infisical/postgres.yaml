@@ -7,7 +7,7 @@ services:
       - POSTGRES_USER=infisical
       - POSTGRES_DB=infisical
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
-      - POSTGRES_INITDB_ARGS="--encoding=UTF8 --locale=C.UTF-8"
+      - POSTGRES_INITDB_ARGS=--encoding=UTF8 --locale=C.UTF-8
     networks:
       - traefik_proxy
     volumes:
