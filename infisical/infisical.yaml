@@ -17,6 +17,7 @@ services:
       - SMTP_IGNORE_TLS=true
       - SMTP_FROM_NAME=Infisical
       - SMTP_PORT=587
+      - AUTH_SECRET=${AUTH_SECRET:?AUTH_SECRET must be set}
     labels:
       - traefik.enable=true
       - traefik.http.routers.infisical.rule=Host(`infisical.xalab.io`)
