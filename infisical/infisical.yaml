@@ -1,0 +1,22 @@
+name: infisical-stack
+services:
+  infisical:
+    networks:
+      - traefik_proxy
+    container_name: infisical
+    restart: unless-stopped
+    # depends_on:
+      # db:
+      #   condition: service_healthy
+      # redis:
+      #   condition: service_started
+    image: infisical/infisical:v0.165.16
+    pull_policy: always
+    environment:
+      - NODE_ENV=production
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.infisical.rule=Host(`infisical.xalab.io`)
+      - traefik.http.routers.infisical.entrypoints=websecure
+      - traefik.http.routers.infisical.tls.certresolver=cloudflare
+      - traefik.http.services.infisical.loadbalancer.server.port=8080
