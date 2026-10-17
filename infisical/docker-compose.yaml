@@ -3,7 +3,7 @@ include:
   - path: infisical.yaml
   - path: traefik.yaml
   - path: redis.yaml
-  # - path: postgres.yaml
+  - path: postgres.yaml
 
 
 volumes:
