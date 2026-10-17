@@ -24,6 +24,7 @@ services:
       - SMTP_FROM_ADDRESS=${SMTP_FROM_ADDRESS:?SMTP_FROM_ADDRESS must be set}
       - SMTP_HOST=${SMTP_HOST:?SMTP_HOST must be set}
       - SMTP_PASSWORD=${SMTP_PASSWORD:?SMTP_PASSWORD must be set}
+      - DB_CONNECTION_URI=${DB_CONNECTION_URI:?DB_CONNECTION_URI must be set}
     labels:
       - traefik.enable=true
       - traefik.http.routers.infisical.rule=Host(`infisical.xalab.io`)
