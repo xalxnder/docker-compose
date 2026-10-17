@@ -18,6 +18,12 @@ services:
       - SMTP_FROM_NAME=Infisical
       - SMTP_PORT=587
       - AUTH_SECRET=${AUTH_SECRET:?AUTH_SECRET must be set}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY:?ENCRYPTION_KEY must be set}
+      - REDIS_URL=${REDIS_URL:?REDIS_URL must be set}
+      - SITE_URL=${SITE_URL:?SITE_URL must be set}
+      - SMTP_FROM_ADDRESS=${SMTP_FROM_ADDRESS:?SMTP_FROM_ADDRESS must be set}
+      - SMTP_HOST=${SMTP_HOST:?SMTP_HOST must be set}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:?SMTP_PASSWORD must be set}
     labels:
       - traefik.enable=true
       - traefik.http.routers.infisical.rule=Host(`infisical.xalab.io`)
