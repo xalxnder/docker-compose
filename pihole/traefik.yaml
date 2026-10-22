@@ -1,7 +1,7 @@
 name: pihole-stack
 services:
   traefik:
-    image: traefik:v3.7.15
+    image: traefik:v3.7.16
     deploy:
       resources:
           limits:
