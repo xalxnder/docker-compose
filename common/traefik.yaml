@@ -21,7 +21,6 @@ services:
       - --api.insecure=true
       - --providers.docker=true
       - --entrypoints.web.address=:80
-      - --entrypoints.periphery.address=:8120
       - --entrypoints.websecure.address=:443
       - --certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json
       - --certificatesresolvers.cloudflare.acme.email=xalexander51@gmail.com
@@ -35,7 +34,6 @@ services:
       - 80:80
       - 8080:8080
       - 443:443
-      - 8120:8120
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./letsencrypt:/letsencrypt
