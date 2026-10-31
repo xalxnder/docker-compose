@@ -3,6 +3,7 @@ services:
     container_name: infisical-db
     image: percona/percona-distribution-postgresql:17
     restart: always
+    user: 26
     environment:
       - POSTGRES_USER=infisical
       - POSTGRES_DB=infisical
